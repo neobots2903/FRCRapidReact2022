@@ -10,6 +10,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.RobotMap;
 
 public class Drive2903 {
+  public static final int TICKS_PER_REV = 4096;
+  public static final double WHEEL_CIRCUMFERENCE = Math.PI * 6;  //in inches 
+  public static final double GEAR_RATIO = 10.714284; 
   CANSparkMax frontLeftMotor;
   CANSparkMax frontRightMotor;
   CANSparkMax backLeftMotor;
@@ -34,5 +37,20 @@ public class Drive2903 {
     frontRightMotor.set(-forward+turn);
     backLeftMotor.set(forward+turn);
     backRightMotor.set(-forward+turn);
+  }
+// to go backwords give a negative speed 
+  public void distanceDrive (double distance, double speed){
+    double startPos = frontLeftMotor.getEncoder().getPosition();
+    while (ticksToInches(frontLeftMotor.getEncoder().getPosition() - startPos) < Math.abs(distance)){
+      arcadeDrive(speed, 0);
+    }
+    arcadeDrive(0, 0);
+  }
+  
+  public static double ticksToInches (double ticks){
+    double rev = ticks / TICKS_PER_REV; 
+    double wheelRev = rev / GEAR_RATIO;
+    double distance = wheelRev * WHEEL_CIRCUMFERENCE;
+    return Math.abs(distance);  
   }
 }
