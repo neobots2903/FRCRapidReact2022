@@ -16,14 +16,22 @@ public class RobotMap {
 
     public static final int TBD = 0;
     
-    
-    //Motors
+    //SparkMax motors 
    public static final int frontLeftMotor = 1;
    public static final int frontRightMotor = 3;
    public static final int backLeftMotor = 2;
    public static final int backRightMotor = 4;
+   public static final int leftShoot =  5;
+   public static final int rightShoot = 6; 
    
-   
+   //TalonSRX motors 
+   public static final int climb = 7; 
+   public static final int leftIntake = 8;
+   public static final int rightIntake = 9;
+   public static final int upperBelt = 10; 
+   public static final int lowerBelt = 11; 
+   public static final int pivot = 12;
+
 
     //Controllers
     public static final int driveJoy = 0;
