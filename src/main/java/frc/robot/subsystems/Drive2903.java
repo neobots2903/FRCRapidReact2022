@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Drive2903 {
@@ -41,13 +42,13 @@ public class Drive2903 {
   public void distanceDrive (double distance, double speed){
     double startPos = frontLeftMotor.getEncoder().getPosition();
     while (ticksToInches(frontLeftMotor.getEncoder().getPosition() - startPos) < Math.abs(distance)){
+      SmartDashboard.putNumber("distance (in)", ticksToInches(frontLeftMotor.getEncoder().getPosition() - startPos));
       arcadeDrive(speed, 0);
     }
     arcadeDrive(0, 0);
   }
   
-  public static double ticksToInches (double ticks){
-    double rev = ticks / TICKS_PER_REV; 
+  public static double ticksToInches (double rev){
     double wheelRev = rev / GEAR_RATIO;
     double distance = wheelRev * WHEEL_CIRCUMFERENCE;
     return Math.abs(distance);  

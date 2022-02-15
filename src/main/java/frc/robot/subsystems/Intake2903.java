@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Intake2903 {
@@ -14,6 +16,10 @@ public class Intake2903 {
         rightIntake = new TalonSRX(RobotMap.rightIntake);
         upperBelt = new TalonSRX(RobotMap.upperBelt);
         lowerBelt = new TalonSRX(RobotMap.lowerBelt);
+    }
+    public void shoot(double speed){
+        leftIntake.set(ControlMode.PercentOutput, 0);
+        rightIntake.set(ControlMode.PercentOutput, 0);
     }
     
 }
