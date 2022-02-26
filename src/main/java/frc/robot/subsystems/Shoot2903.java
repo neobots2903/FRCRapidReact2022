@@ -1,26 +1,43 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Shoot2903 {
-    CANSparkMax leftShoot;
-    CANSparkMax rightShoot; 
-    TalonSRX pivot; 
+    final int TICKS_PER_REV = 4096; 
+    CANSparkMax upperShoot;
+    CANSparkMax lowerShoot; 
+    public TalonSRX pivot; 
+    public TalonSRX pivotf; 
+    DigitalInput pivotLimit; 
+
     public Shoot2903(){
-        leftShoot = new CANSparkMax (RobotMap.leftShoot,MotorType.kBrushless);
-        rightShoot = new CANSparkMax (RobotMap.rightShoot,MotorType.kBrushless);
+        upperShoot = new CANSparkMax (RobotMap.upperShoot,MotorType.kBrushless);
+        lowerShoot = new CANSparkMax (RobotMap.lowerShoot,MotorType.kBrushless);
         pivot = new TalonSRX(RobotMap.pivot);
+        pivotf = new TalonSRX(RobotMap.pivot);
+        pivotLimit = new DigitalInput(RobotMap.pivotLimit); 
+        pivotf.follow(pivot);
+        pivot.setInverted(false);
+        pivotf.setInverted(InvertType.OpposeMaster);
     }
     public void shoot(double speed){
-        leftShoot.set(-speed);
-        rightShoot.set(speed);
+        upperShoot.set(-speed);
+        lowerShoot.set(speed);
     }
-    public void setAngle(){
-        // pivot.setposition
+    public void initPivot(){
+        while (!pivotLimit.get()){
+            pivot.set(ControlMode.PercentOutput, .25);
+        }
+        pivot.set(ControlMode.PercentOutput, 0);
+        pivot.setSelectedSensorPosition(0);
     }
-
-
+    public void setAngle(double deg){
+        pivot.set(ControlMode.Position, deg / 360 * TICKS_PER_REV);
+    }
 }

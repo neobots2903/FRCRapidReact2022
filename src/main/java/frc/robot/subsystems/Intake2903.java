@@ -1,25 +1,25 @@
 package frc.robot.subsystems;
 
 import frc.robot.RobotMap;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Intake2903 {
-    TalonSRX leftIntake; 
-    TalonSRX rightIntake;
-    TalonSRX upperBelt;
-    TalonSRX lowerBelt; 
+    CANSparkMax upperIntake; 
+    CANSparkMax lowerIntake;
+    CANSparkMax indexer;
 
     public Intake2903(){
-        leftIntake = new TalonSRX(RobotMap.leftIntake);
-        rightIntake = new TalonSRX(RobotMap.rightIntake);
-        upperBelt = new TalonSRX(RobotMap.upperBelt);
-        lowerBelt = new TalonSRX(RobotMap.lowerBelt);
+        upperIntake = new CANSparkMax(RobotMap.upperIntake,MotorType.kBrushless);
+        lowerIntake = new CANSparkMax(RobotMap.lowerIntake,MotorType.kBrushless);
+        indexer = new CANSparkMax(RobotMap.indexer,MotorType.kBrushless);
     }
-    public void shoot(double speed){
-        leftIntake.set(ControlMode.PercentOutput, 0);
-        rightIntake.set(ControlMode.PercentOutput, 0);
+    public void intake(double speed){
+        upperIntake.set(-speed);
+        lowerIntake.set(speed);
     }
-    
+    public void indexer(double speed){
+        indexer.set(-speed);
+        indexer.set(speed);
+    }
 }

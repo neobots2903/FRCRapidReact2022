@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -13,38 +12,71 @@ public class Teleop2903 extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   int leftY = 1;
   int rightX = 4;
+  int lt = 2;
+  int rt = 3; 
+  int buttonA = 0; 
+  int buttonRB = 5;
+  int buttonLB = 4; 
+  int pivotDegrees = 0; 
+  int maxPivotDegrees = 90; 
 
- 
-
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * 
-   */
   public Teleop2903() {
 
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    boolean indexerPressed = Robot.opJoy.getRawButton(buttonLB);
+    boolean intakePressed = Robot.opJoy.getRawButton(buttonRB);
+    boolean shootPressed = Robot.opJoy.getRawButton(buttonA);
+    boolean upPress = Robot.opJoy.getDirectionDegrees() == 90;
+    boolean downPress = Robot.opJoy.getDirectionDegrees() == 270;
+    if (upPress){
+      pivotDegrees += 1;
+      if (pivotDegrees > maxPivotDegrees){
+        pivotDegrees = maxPivotDegrees; 
+      }
+    }
+    else if (downPress){
+      pivotDegrees -= 1;
+      if (pivotDegrees < 0){
+        pivotDegrees = 0; 
+      }
+    }
+    if (shootPressed){
+      Robot.shoot2903.shoot(.75);
+    }
+    else {
+      Robot.shoot2903.shoot(0);
+    }
+    if (indexerPressed){
+      Robot.intake2903.indexer(.6);
+    }
+    else {
+      Robot.intake2903.indexer(0);
+    }
+    if (intakePressed){
+      Robot.intake2903.intake(.6);
+    }
+    else {
+      Robot.intake2903.intake(0);
+    }
+    double climbUp = Robot.opJoy.getRawAxis(rt);
+    double climbDown = Robot.opJoy.getRawAxis(lt);
+    Robot.climb2903.setPower(climbUp - climbDown);
+    Robot.shoot2903.setAngle(pivotDegrees);
     double drivePower = Robot.driveJoy.getRawAxis(leftY);
     double turnPower = Robot.driveJoy.getRawAxis(rightX);
     Robot.drive2903.arcadeDrive(drivePower,turnPower);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Robot.drive2903.arcadeDrive(0,0);
   }
-
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

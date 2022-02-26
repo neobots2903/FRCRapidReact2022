@@ -8,10 +8,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Auto2903;
+//import frc.robot.commands.Auto2903;
 import frc.robot.commands.Teleop2903;
+import frc.robot.subsystems.Climb2903;
 import frc.robot.subsystems.Drive2903;
+import frc.robot.subsystems.Intake2903;
 import frc.robot.subsystems.Limelight2903;
+import frc.robot.subsystems.Shoot2903;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,6 +32,10 @@ public class Robot extends TimedRobot {
   public static Drive2903 drive2903;
   public static Joystick driveJoy;
   public static Joystick opJoy;
+  public static Shoot2903 shoot2903;
+  public static Intake2903 intake2903; 
+  public static Climb2903 climb2903; 
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -38,10 +46,15 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     driveJoy = new Joystick(RobotMap.driveJoy);
     opJoy = new Joystick(RobotMap.opJoy);
+    intake2903 = new Intake2903(); 
+    climb2903 = new Climb2903();
     limelight2903 = new Limelight2903();
+    shoot2903 = new Shoot2903(); 
     drive2903 = new Drive2903();
     teleop = new Teleop2903();
     m_robotContainer = new RobotContainer();
+
+
 
   }
 

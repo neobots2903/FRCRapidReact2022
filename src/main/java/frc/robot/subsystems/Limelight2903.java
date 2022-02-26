@@ -13,10 +13,10 @@ public class Limelight2903 {
 
     public Limelight2903(){
         table = NetworkTableInstance.getDefault().getTable("limelight");
-        tx = table.getEntry("tx");
-        ty = table.getEntry("ty");
-        ta = table.getEntry("ta");
-        tv = table.getEntry("tv");
+        tx = table.getEntry("tx"); //x axis 
+        ty = table.getEntry("ty"); //y axis 
+        ta = table.getEntry("ta"); //area
+        tv = table.getEntry("tv"); //no clue 
     }
     public double getTX() {
         double x = tx.getDouble(0.0);
@@ -30,7 +30,7 @@ public class Limelight2903 {
     }   
     public double getTA() {
         double area = ta.getDouble(0.0);
-        SmartDashboard.putNumber("LimelightArea", area);
+        SmartDashboard.putNumber("LimelightArea", area); 
         return area; 
     }
     public boolean getTV(){

@@ -1,13 +1,18 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import frc.robot.RobotMap;
 
 public class Climb2903 {
-    TalonSRX climb; 
-    public Climb2903(){
-        climb = new TalonSRX(RobotMap.climb); 
-    }
- 
+    CANSparkMax climb; 
 
+    public Climb2903(){
+        climb = new CANSparkMax(RobotMap.climb,MotorType.kBrushless); 
+    }
+    public void setPower(double speed){
+        climb.set(speed);
+    }
+    
 }
