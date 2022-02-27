@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -30,6 +31,16 @@ public class Shoot2903 {
         upperShoot.set(-speed);
         lowerShoot.set(speed);
     }
+    public void shootForTime(int millis, double speed){
+        long startTime = System.currentTimeMillis();
+        long endTime = startTime + millis; 
+        while(System.currentTimeMillis() < endTime){
+            Robot.intake2903.indexer(.15); 
+            shoot(speed);  
+        }
+        Robot.intake2903.indexer(0); 
+        shoot(0);  
+    }
     public void initPivot(){
         while (!pivotLimit.get()){
             pivot.set(ControlMode.PercentOutput, .25);
@@ -39,5 +50,8 @@ public class Shoot2903 {
     }
     public void setAngle(double deg){
         pivot.set(ControlMode.Position, deg / 360 * TICKS_PER_REV);
+    }
+    public double getAngle(){
+        return pivot.getSelectedSensorPosition(0) / TICKS_PER_REV * 360; 
     }
 }

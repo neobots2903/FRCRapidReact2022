@@ -16,7 +16,7 @@ public class Limelight2903 {
         tx = table.getEntry("tx"); //x axis 
         ty = table.getEntry("ty"); //y axis 
         ta = table.getEntry("ta"); //area
-        tv = table.getEntry("tv"); //no clue 
+        tv = table.getEntry("tv"); //see target or not  
     }
     public double getTX() {
         double x = tx.getDouble(0.0);
