@@ -2,7 +2,7 @@ package frc.robot;
 
 public class RobotMap {
     
-    //SparkMax motors 
+    //SparkMax motors                       //Power distrubition 
    public static final int frontLeftMotor = 1; //0
    public static final int frontRightMotor = 3; //1
    public static final int backLeftMotor = 2; //2
@@ -12,6 +12,7 @@ public class RobotMap {
    public static final int climb = 7; //10
    public static final int upperIntake = 8; //8
    public static final int indexer = 9; //9
+   public static final int otherIntake = 12; 
    
    //TalonSRX motors 
    public static final int pivot = 10; //4

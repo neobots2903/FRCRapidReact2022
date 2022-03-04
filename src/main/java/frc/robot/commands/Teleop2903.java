@@ -15,6 +15,8 @@ public class Teleop2903 extends CommandBase {
   int lt = 2;
   int rt = 3; 
   int buttonA = 0; 
+  int buttonX = 2; 
+  int buttonB = 1;
   int buttonRB = 5;
   int buttonLB = 4; 
   int pivotDegrees = 0; 
@@ -64,6 +66,7 @@ public class Teleop2903 extends CommandBase {
     else {
       Robot.intake2903.intake(0);
     }
+    
     double climbUp = Robot.opJoy.getRawAxis(rt);
     double climbDown = Robot.opJoy.getRawAxis(lt);
     Robot.climb2903.setPower(climbUp - climbDown);
