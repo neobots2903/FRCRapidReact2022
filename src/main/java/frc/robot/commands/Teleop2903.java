@@ -27,7 +27,9 @@ public class Teleop2903 extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Robot.shoot2903.initPivot();
+  }
 
   @Override
   public void execute() {

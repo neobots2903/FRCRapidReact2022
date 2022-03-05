@@ -12,6 +12,8 @@ public class Auto2903 extends CommandBase {
   @Override
   public void initialize() {
     running = true;
+    Robot.shoot2903.initPivot();
+
   }
 
   @Override
