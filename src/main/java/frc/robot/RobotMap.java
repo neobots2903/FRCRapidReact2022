@@ -19,11 +19,13 @@ public class RobotMap {
    public static final int pivotf = 11; //5
 
    //Digital IO
-   public static final int pivotLimit = 0; 
-
+   public static final int pivotLimit = 3;
+   public static final int otherIntakeOut = 1;
+   public static final int otherIntakeIn = 2;  
 
     //Controllers
     public static final int driveJoy = 0;
     public static final int opJoy = 1;
+
 
 }

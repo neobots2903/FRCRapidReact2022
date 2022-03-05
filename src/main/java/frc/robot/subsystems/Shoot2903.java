@@ -42,7 +42,8 @@ public class Shoot2903 {
         shoot(0);  
     }
     public void initPivot(){
-        while (!pivotLimit.get()){
+        long maxTime = System.currentTimeMillis() + 3000;
+        while (!pivotLimit.get() && System.currentTimeMillis() < maxTime){
             pivot.set(ControlMode.PercentOutput, .25);
         }
         pivot.set(ControlMode.PercentOutput, 0);

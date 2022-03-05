@@ -33,8 +33,8 @@ public class Teleop2903 extends CommandBase {
   public void execute() {
     boolean indexerPressed = Robot.opJoy.getRawButton(buttonLB);
     boolean intakePressed = Robot.opJoy.getRawButton(buttonRB);
-    boolean intakeTwoPressed = Robot.opJoy.getRawButton(buttonX);
-    boolean intakeThreePressed = Robot.opJoy.getRawButton(buttonB);
+    boolean intakeInPressed = Robot.opJoy.getRawButton(buttonX);
+    boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB);
     boolean shootPressed = Robot.opJoy.getRawButton(buttonA);
     boolean upPress = Robot.opJoy.getDirectionDegrees() == 90;
     boolean downPress = Robot.opJoy.getDirectionDegrees() == 270;
@@ -62,7 +62,7 @@ public class Teleop2903 extends CommandBase {
     else {
       Robot.intake2903.indexer(0);
     }
-    if (intakeTwoPressed){
+    if (intakeInPressed){
       Robot.intake2903.intake(.25);
     }
     else {
@@ -74,7 +74,7 @@ public class Teleop2903 extends CommandBase {
     else {
       Robot.intake2903.intake(0);
     }
-    if (intakeThreePressed){
+    if (intakeOutPressed){
       Robot.intake2903.intake(.25);
     }
     else {
