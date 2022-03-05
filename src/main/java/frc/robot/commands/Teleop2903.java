@@ -63,10 +63,12 @@ public class Teleop2903 extends CommandBase {
       Robot.intake2903.indexer(0);
     }
     if (intakeInPressed){
-      Robot.intake2903.intake(.25);
+      Robot.intake2903.intakeIn(.25);
+    } else if (intakeOutPressed){
+      Robot.intake2903.intakeOut(.25);
     }
     else {
-      Robot.intake2903.intake(0);
+      Robot.intake2903.intakeIn(0);
     }
     if (intakePressed){
       Robot.intake2903.intake(.6);
@@ -74,13 +76,6 @@ public class Teleop2903 extends CommandBase {
     else {
       Robot.intake2903.intake(0);
     }
-    if (intakeOutPressed){
-      Robot.intake2903.intake(.25);
-    }
-    else {
-      Robot.intake2903.intake(0);
-    }
-    
     
     double climbUp = Robot.opJoy.getRawAxis(rt);
     double climbDown = Robot.opJoy.getRawAxis(lt);
