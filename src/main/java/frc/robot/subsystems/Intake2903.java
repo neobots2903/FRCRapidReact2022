@@ -17,7 +17,12 @@ public class Intake2903 {
     public void intake(double speed){
         upperIntake.set(-speed);
     }
-    public void intakeTwo()
+    public void intakeTwo(double speed){
+        otherIntake.set(speed);
+    }
+    public void intakeThree(double speed){
+        otherIntake.set(-speed);
+    }
     public void indexer(double speed){
         indexer.set(speed);
     }
