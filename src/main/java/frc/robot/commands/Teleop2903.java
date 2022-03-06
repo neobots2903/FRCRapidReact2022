@@ -14,13 +14,14 @@ public class Teleop2903 extends CommandBase {
   int rightX = 4;
   int lt = 2;
   int rt = 3; 
-  int buttonA = 0; 
-  int buttonX = 2; 
-  int buttonB = 1;
-  int buttonRB = 5;
-  int buttonLB = 4; 
+  int buttonA = 1; 
+  int buttonX = 3; 
+  int buttonY = 4;
+  int buttonB = 2;
+  int buttonRB = 6;
+  int buttonLB = 5; 
   int pivotDegrees = 0; 
-  int maxPivotDegrees = 90; 
+  int minPivotDegrees = -90; 
 
   public Teleop2903() {
 
@@ -28,6 +29,7 @@ public class Teleop2903 extends CommandBase {
 
   @Override
   public void initialize() {
+    pivotDegrees = 0;
     Robot.shoot2903.initPivot();
   }
 
@@ -38,54 +40,61 @@ public class Teleop2903 extends CommandBase {
     boolean intakeInPressed = Robot.opJoy.getRawButton(buttonX);
     boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB);
     boolean shootPressed = Robot.opJoy.getRawButton(buttonA);
-    boolean upPress = Robot.opJoy.getDirectionDegrees() == 90;
-    boolean downPress = Robot.opJoy.getDirectionDegrees() == 270;
-    if (upPress){
+    boolean indexRevPressed = Robot.opJoy.getRawButton(buttonY);
+    double upPress = Robot.opJoy.getRawAxis(leftY);
+    if (upPress < -.2){
       pivotDegrees += 1;
-      if (pivotDegrees > maxPivotDegrees){
-        pivotDegrees = maxPivotDegrees; 
-      }
-    }
-    else if (downPress){
-      pivotDegrees -= 1;
-      if (pivotDegrees < 0){
+      if (pivotDegrees > 0){
         pivotDegrees = 0; 
       }
     }
+    else if (upPress > .2){
+      pivotDegrees -= 1;
+      if (pivotDegrees < minPivotDegrees){
+        pivotDegrees = minPivotDegrees; 
+      }
+    }
+    //System.out.println("Shoot angle DEGREES: " + pivotDegrees);
     if (shootPressed){
-      Robot.shoot2903.shoot(.75);
+      Robot.shoot2903.shoot(.60);
     }
     else {
       Robot.shoot2903.shoot(0);
     }
+
     if (indexerPressed){
-      Robot.intake2903.indexer(.6);
+      Robot.intake2903.indexer(.50);
+      Robot.shoot2903.shoot(-.10);
     }
-    else {
+    else if (indexRevPressed) {
+      Robot.intake2903.indexer(-.50);
+    } else {
       Robot.intake2903.indexer(0);
     }
-    if (intakeInPressed){
-      Robot.intake2903.intakeIn(.25);
-    } else if (intakeOutPressed){
-      Robot.intake2903.intakeOut(.25);
-    }
-    else {
+
+    if (intakeInPressed) {
+      Robot.intake2903.intakeIn(0.75);
+    } else if (intakeOutPressed) {
+      Robot.intake2903.intakeOut(0.75);
+    } else {
       Robot.intake2903.intakeIn(0);
     }
-    if (intakePressed){
-      Robot.intake2903.intake(.6);
-    }
-    else {
+
+    if (intakePressed) {
+      Robot.intake2903.intake(.75);
+    } else {
       Robot.intake2903.intake(0);
     }
     
     double climbUp = Robot.opJoy.getRawAxis(rt);
     double climbDown = Robot.opJoy.getRawAxis(lt);
+    //System.out.println("Climb Power: " + (climbUp - climbDown));
     Robot.climb2903.setPower(climbUp - climbDown);
     Robot.shoot2903.setAngle(pivotDegrees);
-    double drivePower = Robot.driveJoy.getRawAxis(leftY);
+    double driveBackPower = Robot.driveJoy.getRawAxis(lt);
+    double driveForwardPower = Robot.driveJoy.getRawAxis(rt);
     double turnPower = Robot.driveJoy.getRawAxis(rightX);
-    Robot.drive2903.arcadeDrive(drivePower,turnPower);
+    Robot.drive2903.arcadeDrive(driveForwardPower - driveBackPower,turnPower);
   }
 
   @Override

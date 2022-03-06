@@ -16,12 +16,13 @@ public class Shoot2903 {
     public TalonSRX pivot; 
     public TalonSRX pivotf; 
     DigitalInput pivotLimit; 
+    boolean initialize = false; 
 
     public Shoot2903(){
         upperShoot = new CANSparkMax (RobotMap.upperShoot,MotorType.kBrushless);
         lowerShoot = new CANSparkMax (RobotMap.lowerShoot,MotorType.kBrushless);
         pivot = new TalonSRX(RobotMap.pivot);
-        pivotf = new TalonSRX(RobotMap.pivot);
+        pivotf = new TalonSRX(RobotMap.pivotf);
         pivotLimit = new DigitalInput(RobotMap.pivotLimit); 
         pivotf.follow(pivot);
         pivot.setInverted(false);
@@ -40,14 +41,19 @@ public class Shoot2903 {
         }
         Robot.intake2903.indexer(0); 
         shoot(0);  
+
     }
     public void initPivot(){
-        long maxTime = System.currentTimeMillis() + 3000;
-        while (!pivotLimit.get() && System.currentTimeMillis() < maxTime){
-            pivot.set(ControlMode.PercentOutput, .25);
+        // long maxTime = System.currentTimeMillis() + 3000;
+        // while (!pivotLimit.get() && System.currentTimeMillis() < maxTime){
+        //     pivot.set(ControlMode.PercentOutput, .25);
+        // }
+        // pivot.set(ControlMode.PercentOutput, 0);
+        if (!initialize) {
+            pivot.setSelectedSensorPosition(0);
+            initialize = true;
         }
-        pivot.set(ControlMode.PercentOutput, 0);
-        pivot.setSelectedSensorPosition(0);
+        
     }
     public void setAngle(double deg){
         pivot.set(ControlMode.Position, deg / 360 * TICKS_PER_REV);

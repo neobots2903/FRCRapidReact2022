@@ -12,11 +12,11 @@ public class RobotMap {
    public static final int climb = 7; //11
    public static final int upperIntake = 8; //8
    public static final int indexer = 9; //10
-   public static final int otherIntake = 12; //9
    
    //TalonSRX motors 
    public static final int pivot = 10; //4
    public static final int pivotf = 11; //5
+   public static final int otherIntake = 12; //9
 
    //Digital IO
    public static final int pivotLimit = 3;

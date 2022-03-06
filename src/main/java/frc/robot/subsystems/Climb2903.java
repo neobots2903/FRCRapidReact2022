@@ -9,7 +9,7 @@ public class Climb2903 {
     CANSparkMax climb; 
 
     public Climb2903(){
-        climb = new CANSparkMax(RobotMap.climb,MotorType.kBrushless); 
+        climb = new CANSparkMax(RobotMap.climb, MotorType.kBrushed); 
     }
     public void setPower(double speed){
         climb.set(speed);
