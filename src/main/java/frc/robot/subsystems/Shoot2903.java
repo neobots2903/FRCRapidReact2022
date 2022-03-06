@@ -22,7 +22,9 @@ public class Shoot2903 {
         upperShoot = new CANSparkMax (RobotMap.upperShoot,MotorType.kBrushless);
         lowerShoot = new CANSparkMax (RobotMap.lowerShoot,MotorType.kBrushless);
         pivot = new TalonSRX(RobotMap.pivot);
+        pivot.enableCurrentLimit(true);
         pivotf = new TalonSRX(RobotMap.pivotf);
+        pivotf.enableCurrentLimit(true);
         pivotLimit = new DigitalInput(RobotMap.pivotLimit); 
         pivotf.follow(pivot);
         pivot.setInverted(false);
