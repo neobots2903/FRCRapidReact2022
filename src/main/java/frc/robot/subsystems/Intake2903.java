@@ -26,6 +26,9 @@ public class Intake2903 {
     public void intake(double speed){
         upperIntake.set(-speed);
     }
+    public void intakeRev(double speed){
+        upperIntake.set(speed);
+    }
     public void intakeIn(double speed){ 
         if (otherIntakeIn.get()){
             otherIntake.set(ControlMode.PercentOutput, speed);

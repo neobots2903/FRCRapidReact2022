@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class Teleop2903 extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   int leftY = 1;
-  int rightX = 4;
+  int rightX = 0;
   int lt = 2;
   int rt = 3; 
   int buttonA = 1; 
@@ -35,13 +35,14 @@ public class Teleop2903 extends CommandBase {
 
   @Override
   public void execute() {
-    boolean indexerPressed = Robot.opJoy.getRawButton(buttonLB);
-    boolean intakePressed = Robot.opJoy.getRawButton(buttonRB);
-    boolean intakeInPressed = Robot.opJoy.getRawButton(buttonX);
-    boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB);
-    boolean shootPressed = Robot.opJoy.getRawButton(buttonA);
-    boolean indexRevPressed = Robot.opJoy.getRawButton(buttonY);
-    double upPress = Robot.opJoy.getRawAxis(leftY);
+    boolean indexerPressed = Robot.opJoy.getRawButton(buttonRB); //index brings balls in 
+    boolean intakePressed = Robot.opJoy.getRawButton(buttonRB);  //wheels brings ball in 
+    boolean intakeRevPressed = Robot.opJoy.getRawButton(buttonLB);//wheels bring ball out 
+    boolean intakeInPressed = Robot.opJoy.getRawButton(buttonY); //it comes in
+    boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB); //it goes out 
+    boolean shootPressed = Robot.opJoy.getRawButton(buttonX); //Shoots the balls
+    boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
+    double upPress = Robot.opJoy.getRawAxis(leftY); //pos shooter 
     if (upPress < -.2){
       pivotDegrees += 1;
       if (pivotDegrees > 0){
@@ -65,8 +66,7 @@ public class Teleop2903 extends CommandBase {
     if (indexerPressed){
       Robot.intake2903.indexer(.50);
       Robot.shoot2903.shoot(-.10);
-    }
-    else if (indexRevPressed) {
+    } else if (indexRevPressed) {
       Robot.intake2903.indexer(-.50);
     } else {
       Robot.intake2903.indexer(0);
@@ -82,7 +82,9 @@ public class Teleop2903 extends CommandBase {
 
     if (intakePressed) {
       Robot.intake2903.intake(.75);
-    } else {
+    } else if (intakeRevPressed) {
+      Robot.intake2903.intakeRev(.75);
+    }else {
       Robot.intake2903.intake(0);
     }
     
