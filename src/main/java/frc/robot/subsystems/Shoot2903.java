@@ -15,9 +15,10 @@ public class Shoot2903 {
     CANSparkMax lowerShoot; 
     public TalonSRX pivot; 
     public TalonSRX pivotf; 
-    DigitalInput pivotLimit; 
+    DigitalInput pivotLimitLower; 
+    DigitalInput pivotLimitUpper;
     boolean initialize = false; 
-
+    double setAngleBoom = 0;
     public Shoot2903(){
         upperShoot = new CANSparkMax (RobotMap.upperShoot,MotorType.kBrushless);
         lowerShoot = new CANSparkMax (RobotMap.lowerShoot,MotorType.kBrushless);
@@ -25,7 +26,8 @@ public class Shoot2903 {
         pivot.enableCurrentLimit(true);
         pivotf = new TalonSRX(RobotMap.pivotf);
         pivotf.enableCurrentLimit(true);
-        pivotLimit = new DigitalInput(RobotMap.pivotLimit); 
+        pivotLimitLower = new DigitalInput(RobotMap.pivotLimitLower); 
+        pivotLimitUpper = new DigitalInput(RobotMap.pivotLimitUpper);
         pivotf.follow(pivot);
         pivot.setInverted(false);
         pivotf.setInverted(InvertType.OpposeMaster);
@@ -34,11 +36,13 @@ public class Shoot2903 {
         upperShoot.set(-speed);
         lowerShoot.set(speed);
     }
-    public void shootForTime(int millis, double speed){
+    public void shootForTime(int millis,int startMillis, double speed ){
         long startTime = System.currentTimeMillis();
         long endTime = startTime + millis; 
         while(System.currentTimeMillis() < endTime){
-            Robot.intake2903.indexer(.15); 
+            if (System.currentTimeMillis() > startTime + startMillis){
+                Robot.intake2903.indexer(-.6); 
+            }
             shoot(speed);  
         }
         Robot.intake2903.indexer(0); 
@@ -57,8 +61,17 @@ public class Shoot2903 {
         }
         
     }
+    // public void checkLimits(){
+    //     if (pivotLimitUpper.get() || pivotLimitLower.get()){
+    //         setAngle(getAngle());
+    //     }
+    // }
     public void setAngle(double deg){
+        if ((!pivotLimitUpper.get() && deg > setAngleBoom) || (!pivotLimitLower.get() && deg < setAngleBoom)){
+            return;
+        }
         pivot.set(ControlMode.Position, deg / 360 * TICKS_PER_REV);
+        setAngleBoom = deg;
     }
     public double getAngle(){
         return pivot.getSelectedSensorPosition(0) / TICKS_PER_REV * 360; 

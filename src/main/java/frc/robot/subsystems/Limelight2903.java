@@ -34,7 +34,7 @@ public class Limelight2903 {
         return area; 
     }
     public boolean getTV(){
-        boolean valid = tv.getBoolean(false);
+        boolean valid = tv.getDouble(0) == 1.0;
         SmartDashboard.putBoolean("LimelightV", valid);
         return valid;
     }
