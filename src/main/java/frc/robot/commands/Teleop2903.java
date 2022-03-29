@@ -22,6 +22,7 @@ public class Teleop2903 extends CommandBase {
   int buttonLB = 5; 
   int pivotDegrees = 0; 
   int minPivotDegrees = -90; 
+  // double error = 0.5; 
 
   public Teleop2903() {
 
@@ -44,6 +45,7 @@ public class Teleop2903 extends CommandBase {
     boolean shootPressed = Robot.opJoy.getRawButton(buttonX); //Shoots the balls
     boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
     double upPress = Robot.opJoy.getRawAxis(leftY); //pos shooter 
+    Robot.shoot2903.limits();
     Robot.limelight2903.getTA();
     Robot.limelight2903.getTV();
     Robot.limelight2903.getTX();
@@ -63,6 +65,22 @@ public class Teleop2903 extends CommandBase {
     //System.out.println("Shoot angle DEGREES: " + pivotDegrees);
     if (shootPressed){
       Robot.shoot2903.shoot(1);
+      // while(shootPressed){
+      //   if (Robot.limelight2903.getTV()){ 
+      //     if (Robot.limelight2903.getTX() > error){
+      //       Robot.drive2903.arcadeDrive(0, .07);
+      //     }
+      //     else if(Robot.limelight2903.getTX() < -error){
+      //         Robot.drive2903.arcadeDrive(0, -.07);
+      //     }
+      //     else {
+      //       Robot.drive2903.arcadeDrive(0, 0);
+      //       shootPressed = false; 
+      //     }
+      //   } else {
+      //     Robot.drive2903.arcadeDrive(0, -.10);
+      //   }
+      // }
     }
     else {
       Robot.shoot2903.shoot(0);
