@@ -19,10 +19,10 @@ public class RobotMap {
    public static final int otherIntake = 12; //9
 
    //Digital IO
-   public static final int pivotLimitLower = 3;
-   public static final int otherIntakeOut = 1;
-   public static final int otherIntakeIn = 2;  
-   public static final int pivotLimitUpper = 0;
+   public static final int pivotLimitLower = 0;
+   public static final int otherIntakeOut = 4;
+   public static final int otherIntakeIn = 3;  
+   public static final int pivotLimitUpper = 1;
 
     //Controllers
     public static final int driveJoy = 0;

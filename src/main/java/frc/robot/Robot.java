@@ -15,6 +15,8 @@ import frc.robot.subsystems.Drive2903;
 import frc.robot.subsystems.Intake2903;
 import frc.robot.subsystems.Limelight2903;
 import frc.robot.subsystems.Shoot2903;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 
 
 /**
@@ -35,6 +37,7 @@ public class Robot extends TimedRobot {
   public static Shoot2903 shoot2903;
   public static Intake2903 intake2903; 
   public static Climb2903 climb2903; 
+  public static UsbCamera camera; 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -53,7 +56,7 @@ public class Robot extends TimedRobot {
     drive2903 = new Drive2903();
     teleop = new Teleop2903();
     m_robotContainer = new RobotContainer();
-
+    camera = CameraServer.startAutomaticCapture();
 
 
   }
@@ -97,6 +100,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
+    
 
   @Override
   public void teleopInit() {
