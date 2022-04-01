@@ -53,12 +53,10 @@ public class Shoot2903 {
 
     }
     public void limits(){
-        SmartDashboard.putBoolean ("pivotLimitUpper",!pivotLimitUpper.get());
-        SmartDashboard.putBoolean ("pivotLimitLower",!pivotLimitLower.get());
-        pivotLimitUpper.get();
-        pivotLimitLower.get();
-
+        SmartDashboard.putBoolean ("Limit switch up",!pivotLimitUpper.get());
+        SmartDashboard.putBoolean ("Limit switch down",!pivotLimitLower.get());
     }
+
     public void initPivot(){
         // long maxTime = System.currentTimeMillis() + 3000;
         // while (!pivotLimit.get() && System.currentTimeMillis() < maxTime){
@@ -82,6 +80,7 @@ public class Shoot2903 {
         }
         pivot.set(ControlMode.Position, deg / 360 * TICKS_PER_REV);
         setAngleBoom = deg;
+        SmartDashboard.putNumber("Pivot angle ", deg);
     }
     public double getAngle(){
         return pivot.getSelectedSensorPosition(0) / TICKS_PER_REV * 360; 

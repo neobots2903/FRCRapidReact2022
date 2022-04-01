@@ -7,7 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake2903 {
     CANSparkMax upperIntake; 
@@ -15,6 +17,7 @@ public class Intake2903 {
     CANSparkMax indexer;
     DigitalInput otherIntakeOut;
     DigitalInput otherIntakeIn; 
+    AnalogInput intakePot; 
 
     public Intake2903(){
         upperIntake = new CANSparkMax(RobotMap.upperIntake,MotorType.kBrushed);
@@ -22,6 +25,7 @@ public class Intake2903 {
         indexer = new CANSparkMax(RobotMap.indexer,MotorType.kBrushed);
         otherIntakeOut = new DigitalInput(RobotMap.otherIntakeOut);
         otherIntakeIn = new DigitalInput(RobotMap.otherIntakeIn);
+        intakePot = new AnalogInput(RobotMap.intakePot);
     }
     public void intake(double speed){
         upperIntake.set(-speed);
@@ -30,6 +34,7 @@ public class Intake2903 {
         upperIntake.set(speed);
     }
     public void intakeIn(double speed){ 
+        SmartDashboard.putNumber("intake pos", intakePot.getValue());
         if (otherIntakeIn.get()){
             otherIntake.set(ControlMode.PercentOutput, speed);
         }
@@ -38,6 +43,7 @@ public class Intake2903 {
         }
     }
     public void intakeOut(double speed){ 
+        SmartDashboard.putNumber("intake pos", intakePot.getValue());
         if (otherIntakeOut.get()){
             otherIntake.set(ControlMode.PercentOutput, -speed);
         }

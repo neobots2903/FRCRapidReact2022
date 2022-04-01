@@ -45,7 +45,7 @@ public class Teleop2903 extends CommandBase {
     boolean intakeInPressed = Robot.opJoy.getRawButton(buttonY); //it comes in
     boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB); //it goes out 
     boolean shootPressed = Robot.opJoy.getRawButton(buttonX); //Shoots the balls
-    boolean autoAimPressed = Robot.opJoy.getRawButton(button); //auto shoot/aim 
+    boolean autoAimPressed = Robot.driveJoy.getRawButton(buttonB); //auto shoot/aim and drive
     boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
     double upPress = Robot.opJoy.getRawAxis(leftY); //pos shooter 
     Robot.shoot2903.limits();
@@ -73,22 +73,23 @@ public class Teleop2903 extends CommandBase {
       Robot.shoot2903.shoot(0);
     }
     if (autoAimPressed) {
-      if(shootPressed){
-        if (Robot.limelight2903.getTV()){ 
-          if (Robot.limelight2903.getTX() > error){
-            Robot.drive2903.arcadeDrive(0, .07);
-          }
-          else if(Robot.limelight2903.getTX() < -error){
-              Robot.drive2903.arcadeDrive(0, -.07);
-          }
-          else {
-            Robot.drive2903.arcadeDrive(0, 0);
-            shootPressed = false; 
-          }
-        } else {
-          Robot.drive2903.arcadeDrive(0, -.10);
+      if (Robot.limelight2903.getTV()){ 
+        if (Robot.limelight2903.getTX() > error){
+          Robot.drive2903.arcadeDrive(0, .07);
         }
-      }
+        else if(Robot.limelight2903.getTX() < -error){
+            Robot.drive2903.arcadeDrive(0, -.07);
+        }
+        else {
+          Robot.drive2903.arcadeDrive(0, 0);
+        }
+      } 
+    } else {
+      double driveBackPower = Robot.driveJoy.getRawAxis(lt);
+      double driveForwardPower = Robot.driveJoy.getRawAxis(rt);
+      double turnPower = Robot.driveJoy.getRawAxis(rightX);
+      Robot.drive2903.arcadeDrive(driveForwardPower - driveBackPower,turnPower);
+
     }
 
     if (indexerPressed){
@@ -121,10 +122,6 @@ public class Teleop2903 extends CommandBase {
     //System.out.println("Climb Power: " + (climbUp - climbDown));
     Robot.climb2903.setPower(climbUp - climbDown);
     Robot.shoot2903.setAngle(pivotDegrees);
-    double driveBackPower = Robot.driveJoy.getRawAxis(lt);
-    double driveForwardPower = Robot.driveJoy.getRawAxis(rt);
-    double turnPower = Robot.driveJoy.getRawAxis(rightX);
-    Robot.drive2903.arcadeDrive(driveForwardPower - driveBackPower,turnPower);
   }
 
   @Override

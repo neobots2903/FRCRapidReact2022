@@ -28,5 +28,8 @@ public class RobotMap {
     public static final int driveJoy = 0;
     public static final int opJoy = 1;
 
+    //analog Io
+    public static final int intakePot = 0; 
+
 
 }
