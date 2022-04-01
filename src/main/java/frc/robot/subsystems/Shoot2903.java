@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Shoot2903 {
     final int TICKS_PER_REV = 4096; 
@@ -31,6 +33,7 @@ public class Shoot2903 {
         pivotf.follow(pivot);
         pivot.setInverted(false);
         pivotf.setInverted(InvertType.OpposeMaster);
+        
     }
     public void shoot(double speed){
         upperShoot.set(-speed);
@@ -47,6 +50,13 @@ public class Shoot2903 {
         }
         Robot.intake2903.indexer(0); 
         shoot(0);  
+
+    }
+    public void limits(){
+        SmartDashboard.putBoolean ("pivotLimitUpper",!pivotLimitUpper.get());
+        SmartDashboard.putBoolean ("pivotLimitLower",!pivotLimitLower.get());
+        pivotLimitUpper.get();
+        pivotLimitLower.get();
 
     }
     public void initPivot(){

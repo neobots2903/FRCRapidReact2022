@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /** An example command that uses an example subsystem. */
 public class Teleop2903 extends CommandBase {
@@ -22,7 +24,7 @@ public class Teleop2903 extends CommandBase {
   int buttonLB = 5; 
   int pivotDegrees = 0; 
   int minPivotDegrees = -90; 
-  // double error = 0.5; 
+  double error = 0.5; 
 
   public Teleop2903() {
 
@@ -43,6 +45,7 @@ public class Teleop2903 extends CommandBase {
     boolean intakeInPressed = Robot.opJoy.getRawButton(buttonY); //it comes in
     boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB); //it goes out 
     boolean shootPressed = Robot.opJoy.getRawButton(buttonX); //Shoots the balls
+    boolean autoAimPressed = Robot.opJoy.getRawButton(button); //auto shoot/aim 
     boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
     double upPress = Robot.opJoy.getRawAxis(leftY); //pos shooter 
     Robot.shoot2903.limits();
@@ -65,25 +68,27 @@ public class Teleop2903 extends CommandBase {
     //System.out.println("Shoot angle DEGREES: " + pivotDegrees);
     if (shootPressed){
       Robot.shoot2903.shoot(1);
-      // while(shootPressed){
-      //   if (Robot.limelight2903.getTV()){ 
-      //     if (Robot.limelight2903.getTX() > error){
-      //       Robot.drive2903.arcadeDrive(0, .07);
-      //     }
-      //     else if(Robot.limelight2903.getTX() < -error){
-      //         Robot.drive2903.arcadeDrive(0, -.07);
-      //     }
-      //     else {
-      //       Robot.drive2903.arcadeDrive(0, 0);
-      //       shootPressed = false; 
-      //     }
-      //   } else {
-      //     Robot.drive2903.arcadeDrive(0, -.10);
-      //   }
-      // }
     }
     else {
       Robot.shoot2903.shoot(0);
+    }
+    if (autoAimPressed) {
+      if(shootPressed){
+        if (Robot.limelight2903.getTV()){ 
+          if (Robot.limelight2903.getTX() > error){
+            Robot.drive2903.arcadeDrive(0, .07);
+          }
+          else if(Robot.limelight2903.getTX() < -error){
+              Robot.drive2903.arcadeDrive(0, -.07);
+          }
+          else {
+            Robot.drive2903.arcadeDrive(0, 0);
+            shootPressed = false; 
+          }
+        } else {
+          Robot.drive2903.arcadeDrive(0, -.10);
+        }
+      }
     }
 
     if (indexerPressed){
