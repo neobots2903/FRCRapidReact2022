@@ -21,6 +21,7 @@ public class Shoot2903 {
     DigitalInput pivotLimitUpper;
     boolean initialize = false; 
     double setAngleBoom = 0;
+    long shootStartTele = 0; 
     public Shoot2903(){
         upperShoot = new CANSparkMax (RobotMap.upperShoot,MotorType.kBrushless);
         lowerShoot = new CANSparkMax (RobotMap.lowerShoot,MotorType.kBrushless);
@@ -50,8 +51,17 @@ public class Shoot2903 {
         }
         Robot.intake2903.indexer(0); 
         shoot(0);  
-
     }
+    public void teleShoot(int startMillis, double speed ){
+        if (shootStartTele + startMillis < System.currentTimeMillis()){
+            Robot.intake2903.indexer(-.6);
+        }
+        shoot(speed); 
+    }
+    public void resetShoot(){
+        shootStartTele = System.currentTimeMillis();
+    }
+
     public void limits(){
         SmartDashboard.putBoolean ("Limit switch up",!pivotLimitUpper.get());
         SmartDashboard.putBoolean ("Limit switch down",!pivotLimitLower.get());
@@ -63,13 +73,13 @@ public class Shoot2903 {
         //     pivot.set(ControlMode.PercentOutput, .25);
         // }
         // pivot.set(ControlMode.PercentOutput, 0);
-        if (!initialize) {
+        // if (!initialize) {
             pivot.setSelectedSensorPosition(0);
-            initialize = true;
-        }
-        
+        //     initialize = true;
+        // }
+        setAngle(getAngle());
     }
-    // public void checkLimits(){
+    // // public void checkLimits(){
     //     if (pivotLimitUpper.get() || pivotLimitLower.get()){
     //         setAngle(getAngle());
     //     }
@@ -82,6 +92,11 @@ public class Shoot2903 {
         setAngleBoom = deg;
         SmartDashboard.putNumber("Pivot angle ", deg);
     }
+    public double getTargetBoom (){
+        return setAngleBoom; 
+    }
+
+
     public double getAngle(){
         return pivot.getSelectedSensorPosition(0) / TICKS_PER_REV * 360; 
     }

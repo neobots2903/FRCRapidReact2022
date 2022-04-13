@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /** An example command that uses an example subsystem. */
 public class Teleop2903 extends CommandBase {
@@ -22,9 +20,8 @@ public class Teleop2903 extends CommandBase {
   int buttonB = 2;
   int buttonRB = 6;
   int buttonLB = 5; 
-  int pivotDegrees = 0; 
-  int minPivotDegrees = -90; 
   double error = 0.5; 
+  boolean shootPressedLocked = false; 
 
   public Teleop2903() {
 
@@ -32,7 +29,6 @@ public class Teleop2903 extends CommandBase {
 
   @Override
   public void initialize() {
-    pivotDegrees = 0;
     Robot.shoot2903.initPivot();
   }
 
@@ -46,39 +42,44 @@ public class Teleop2903 extends CommandBase {
     boolean intakeOutPressed = Robot.opJoy.getRawButton(buttonB); //it goes out 
     boolean shootPressed = Robot.opJoy.getRawButton(buttonX); //Shoots the balls
     boolean autoAimPressed = Robot.driveJoy.getRawButton(buttonB); //auto shoot/aim and drive
-    boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
+    // boolean indexRevPressed = Robot.opJoy.getRawButton(buttonA); //index brings balls out 
     double upPress = Robot.opJoy.getRawAxis(leftY); //pos shooter 
     Robot.shoot2903.limits();
     Robot.limelight2903.getTA();
     Robot.limelight2903.getTV();
     Robot.limelight2903.getTX();
     Robot.limelight2903.getTY();
-    if (upPress < -.2){
-      pivotDegrees += 1;
-      if (pivotDegrees > 0){
-        pivotDegrees = 0; 
-      }
-    }
-    else if (upPress > .2){
-      pivotDegrees -= 1;
-      if (pivotDegrees < minPivotDegrees){
-        pivotDegrees = minPivotDegrees; 
-      }
-    }
+    
     //System.out.println("Shoot angle DEGREES: " + pivotDegrees);
     if (shootPressed){
-      Robot.shoot2903.shoot(1);
+      if (!shootPressedLocked){
+        Robot.shoot2903.resetShoot();
+        shootPressedLocked = true; 
+      } 
+      Robot.shoot2903.teleShoot(3000, 1);
+    } else {
+      shootPressedLocked = false;
+      if (intakeRevPressed) {
+        Robot.intake2903.indexer(-.50);
+        Robot.shoot2903.shoot(0.5);
+      } else {
+        if (intakePressed) {
+          Robot.intake2903.indexer(.50);
+          Robot.shoot2903.shoot(-.5);
+        } else {
+          Robot.intake2903.indexer(0);
+          Robot.shoot2903.shoot(0);
+        } 
+      } 
     }
-    else {
-      Robot.shoot2903.shoot(0);
-    }
+
     if (autoAimPressed) {
       if (Robot.limelight2903.getTV()){ 
         if (Robot.limelight2903.getTX() > error){
           Robot.drive2903.arcadeDrive(0, .07);
         }
         else if(Robot.limelight2903.getTX() < -error){
-            Robot.drive2903.arcadeDrive(0, -.07);
+          Robot.drive2903.arcadeDrive(0, -.07);
         }
         else {
           Robot.drive2903.arcadeDrive(0, 0);
@@ -89,17 +90,16 @@ public class Teleop2903 extends CommandBase {
       double driveForwardPower = Robot.driveJoy.getRawAxis(rt);
       double turnPower = Robot.driveJoy.getRawAxis(rightX);
       Robot.drive2903.arcadeDrive(driveForwardPower - driveBackPower,turnPower);
-
     }
 
-    if (indexerPressed){
-      Robot.intake2903.indexer(.50);
-      Robot.shoot2903.shoot(-.10);
-    } else if (indexRevPressed) {
-      Robot.intake2903.indexer(-.50);
-    } else {
-      Robot.intake2903.indexer(0);
-    }
+    // if (indexerPressed){
+    //   Robot.intake2903.indexer(.50);
+    //   Robot.shoot2903.shoot(-.10);
+    // } else if (indexRevPressed) {
+    //   Robot.intake2903.indexer(-.50);
+    // } else {
+    //   Robot.intake2903.indexer(0);
+    // }
 
     if (intakeInPressed) {
       Robot.intake2903.intakeIn(0.75);
@@ -121,7 +121,11 @@ public class Teleop2903 extends CommandBase {
     double climbDown = Robot.opJoy.getRawAxis(lt);
     //System.out.println("Climb Power: " + (climbUp - climbDown));
     Robot.climb2903.setPower(climbUp - climbDown);
-    Robot.shoot2903.setAngle(pivotDegrees);
+    if (upPress < -.2){
+      Robot.shoot2903.setAngle(Robot.shoot2903.getTargetBoom() + 1);
+    } else if (upPress > .2){
+      Robot.shoot2903.setAngle(Robot.shoot2903.getTargetBoom() - 1);
+    }
   }
 
   @Override

@@ -15,16 +15,16 @@ public class Intake2903 {
     CANSparkMax upperIntake; 
     VictorSPX otherIntake; 
     CANSparkMax indexer;
-    DigitalInput otherIntakeOut;
-    DigitalInput otherIntakeIn; 
+    // DigitalInput otherIntakeOut;
+    // DigitalInput otherIntakeIn; 
     AnalogInput intakePot; 
 
     public Intake2903(){
         upperIntake = new CANSparkMax(RobotMap.upperIntake,MotorType.kBrushed);
         otherIntake = new VictorSPX(RobotMap.otherIntake);
         indexer = new CANSparkMax(RobotMap.indexer,MotorType.kBrushed);
-        otherIntakeOut = new DigitalInput(RobotMap.otherIntakeOut);
-        otherIntakeIn = new DigitalInput(RobotMap.otherIntakeIn);
+        // otherIntakeOut = new DigitalInput(RobotMap.otherIntakeOut);
+        // otherIntakeIn = new DigitalInput(RobotMap.otherIntakeIn);
         intakePot = new AnalogInput(RobotMap.intakePot);
     }
     public void intake(double speed){
@@ -35,7 +35,7 @@ public class Intake2903 {
     }
     public void intakeIn(double speed){ 
         SmartDashboard.putNumber("intake pos", intakePot.getValue());
-        if (otherIntakeIn.get()){
+        if (intakePot.getValue() < 1600){
             otherIntake.set(ControlMode.PercentOutput, speed);
         }
         else {
@@ -44,7 +44,7 @@ public class Intake2903 {
     }
     public void intakeOut(double speed){ 
         SmartDashboard.putNumber("intake pos", intakePot.getValue());
-        if (otherIntakeOut.get()){
+        if (intakePot.getValue() > 200){
             otherIntake.set(ControlMode.PercentOutput, -speed);
         }
         else {

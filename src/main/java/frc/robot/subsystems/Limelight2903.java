@@ -38,5 +38,8 @@ public class Limelight2903 {
         SmartDashboard.putBoolean("LimelightV", valid);
         return valid;
     }
+    // public void setLED(boolean on){
+    //     table.getEntry("ledMode"); 
+    // }
 }
 
